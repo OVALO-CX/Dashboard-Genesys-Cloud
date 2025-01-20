@@ -1,0 +1,32 @@
+/*------MuiTable.jsx----*/
+.table-cell {
+    overflow-wrap: break-word; /* ou word-wrap: break-word; */
+  }
+  
+  .custom-table {
+    line-height: 0.5em; /* Réduit l'interligne */
+    font-size: 2em; /* Réduit la taille du texte */
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 8px; /* Ajoute un peu de marge intérieure aux cellules */
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between; /* Utilisez justify-content pour aligner les éléments à droite */
+  }
+
+  
+
+
+
+
+
+  /********************************/
+  .settings-modal {
+    background-color: white;
+    border: 1px solid black;
+    padding: 20px;
+  }
