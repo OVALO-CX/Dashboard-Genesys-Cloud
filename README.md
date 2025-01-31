@@ -6,4 +6,6 @@ Actuellement, cette fonctionalité n'est pas encore opérationnelle.
 Cependant, cela n'impacte pas les autres focntionalités principales: Récupération et affichage des données sur la page WEB
 
 La fonctioanlité WEBSOCKETS sera finalisée est ajoutée dans une prochaine mise à jour.
+
+Ajout d'une fonctionnalité de redimensionnement des widgets.
  
