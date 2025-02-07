@@ -8,7 +8,8 @@ const { URLSearchParams } = require('url');
 const path = require('path');
 
 const CLIENT_ID = 'c00eed13-9bbd-475e-8527-87f99693beec';
-const CLIENT_SECRET = 'c0kaEYSkwsaiz-cVc6-rY-KFRhu3tMz8lSZO9Halo1c';
+const CLIENT_SECRET = 'b1jMSjrejW1-6tGtP3iT4-Ht2miEOOwL0kDaVm1yp_Y'
+/*'c0kaEYSkwsaiz-cVc6-rY-KFRhu3tMz8lSZO9Halo1c';*/
 
 
 const app = express();
@@ -63,7 +64,7 @@ io.on("connection", (socket) => {
         } catch (error) {
             console.error("Erreur lors de la récupération des données en temps réel :", error);
         }
-    }, 5000); // Intervalle de 5 secondes, ajustez selon les besoins
+    }, 21600000); // Intervalle de 5 secondes, ajustez selon les besoins
 
     
     socket.on("disconnect", () => {

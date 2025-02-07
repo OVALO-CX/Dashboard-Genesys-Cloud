@@ -3,17 +3,25 @@ import React, { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '@mui/joy/Card';
-import DropZone from './Components/DropZone';
+//import DropZone from './Components/DropZone';
+import DropZone from "./Components/DragDropZone";
 import DraggableItem from './Components/DraggableItem';
 import AuthToken from './AuthToken';
 import GetUserTable from './UserTable';
 import GetUserPie from './UserPie';
 import Grid from './Components/Grid';
 
+import { Button } from "@mui/joy";
+
 import { HiMiniTableCells } from "react-icons/hi2";
 import { FaChartPie } from "react-icons/fa";
 import { PiChartBarHorizontalFill } from "react-icons/pi";
 import { IoBarChart } from "react-icons/io5";
+
+
+const GRID_SIZE = 20;
+
+const snapToGrid = (value) => Math.round(value / GRID_SIZE) * GRID_SIZE;
 
 
 // Mappage des composants
@@ -27,8 +35,9 @@ function Dashboard() {
   const [token, setToken] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [droppedItems, setDroppedItems] = useState([]);
+  const [cards, setCards] = useState([]);
   //const [showUserTable, setShowUserTable] = useState(false);
-  const [showPieChart, setShowPieChart] = useState(false);
+  //const [showPieChart, setShowPieChart] = useState(false);
   
 
   // Fonction pour recevoir le token
@@ -38,7 +47,18 @@ function Dashboard() {
   };
 
   const handleDrop = (itemName) => {
-    setDroppedItems([...droppedItems, itemName]);
+    setCards([
+      ...cards,
+      {
+        id: cards.length + 1,
+        name: itemName,
+        initialLeft: snapToGrid(50),
+        initialTop: snapToGrid(50),
+        width: snapToGrid(150),
+        height: snapToGrid(100),
+      },
+    ]);
+    
    /* if (itemName === 'User Table') {
         setShowUserTable(true); // Afficher GetUserTable lorsque Item 1 est déposé
       }
@@ -95,6 +115,42 @@ function Dashboard() {
     }
   };*/
 
+  const addCard = (newCard) => {
+    setCards((prevCards) => [...prevCards, newCard]);
+  };
+  /*const addCard = ({ left, top }) => {
+    setCards((prevCards) => [
+      ...prevCards,
+      {
+        id: prevCards.length + 1,
+        initialLeft: snapToGrid(left),
+        initialTop: snapToGrid(top),
+        width: snapToGrid(150), // Largeur par défaut
+        height: snapToGrid(100), // Hauteur par défaut
+      },
+    ]);
+  };*/
+
+  const moveCard = (id, left, top) => {
+    setCards((prevCards) =>
+      prevCards.map((card) =>
+        card.id === id ? { ...card, initialLeft: left, initialTop: top } : card
+      )
+    );
+  };
+
+  const resizeCard = (id, width, height) => {
+    setCards((prevCards) =>
+      prevCards.map((card) =>
+        card.id === id ? { ...card, width, height } : card
+      )
+    );
+  };
+
+  const deleteCard = (id) => {
+    setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+  };
+
 
 
 
@@ -105,27 +161,27 @@ function Dashboard() {
         <h6>Draggable Items</h6>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div style={{ marginRight: '2rem' }}>
-            <DraggableItem name="User Table" selectedIcon={HiMiniTableCells} />
+            <DraggableItem name="User Table" onDrop={handleDrop} selectedIcon={HiMiniTableCells} />
           </div>
           <div style={{ marginRight: '2rem' }}>
-            <DraggableItem name="User PieChart" selectedIcon={FaChartPie} />
+            <DraggableItem name="User PieChart" onDrop={handleDrop} selectedIcon={FaChartPie} />
           </div>
           <div style={{ marginRight: '2rem' }}>
-            <DraggableItem name="User Data2" selectedIcon={PiChartBarHorizontalFill} />
+            <DraggableItem name="User Data2" onDrop={handleDrop} selectedIcon={PiChartBarHorizontalFill} />
           </div>
           <div style={{ marginRight: '2rem' }}>
-            <DraggableItem name="User Data 3 " selectedIcon={IoBarChart} />
+            <DraggableItem name="User Data 3 " onDrop={handleDrop} selectedIcon={IoBarChart} />
           </div>
         </div>
       </div>
-      <DropZone
-        onDrop={handleDrop}
-        droppedItems={droppedItems}
-        renderDroppedItem={renderDroppedItem}
-      />
+      <div style={{ padding: "20px" }}>
+        
+        <DropZone cards={cards} moveCard={moveCard} resizeCard={resizeCard} deleteCard={deleteCard} onAddCard={addCard}/>
+      </div>
     </DndProvider>
   );
-}
+};
+
 export default Dashboard;
 
 
@@ -138,4 +194,4 @@ export default Dashboard;
             {renderDroppedItem(item, index)}
           </Grid>
         ))}
-      </Grid>*/
+      </Grid> */

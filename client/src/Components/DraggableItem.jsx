@@ -5,7 +5,7 @@ import { useDrag } from 'react-dnd';
 
 const DraggableItem = ({ name, selectedIcon: Icon }) => {
   const [{ isDragging }, drag] = useDrag({
-    type: 'item', // Spécification de type valide
+    type: 'CARD', // Spécification de type valide
     item: { name },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
@@ -17,7 +17,8 @@ const DraggableItem = ({ name, selectedIcon: Icon }) => {
     ref={drag}
     style={{
       opacity: isDragging ? 0.5 : 1,
-      cursor: 'move',
+      cursor: 'grab',
+      display:'flex',
       border: '1px solid #000',
       borderRadius: '10px',
       padding: '0.5rem',
