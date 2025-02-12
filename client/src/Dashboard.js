@@ -59,7 +59,7 @@ function Dashboard() {
       },
     ]);
     
-   /* if (itemName === 'User Table') {
+    /*if (itemName === 'User Table') {
         setShowUserTable(true); // Afficher GetUserTable lorsque Item 1 est déposé
       }
       else 
@@ -176,7 +176,10 @@ function Dashboard() {
       </div>
       <div style={{ padding: "20px" }}>
         
-        <DropZone cards={cards} moveCard={moveCard} resizeCard={resizeCard} deleteCard={deleteCard} onAddCard={addCard}/>
+        <DropZone cards={cards} moveCard={moveCard} resizeCard={resizeCard} deleteCard={deleteCard} onAddCard={addCard}
+        //droppedItems={droppedItems}
+        //renderDroppedItem={renderDroppedItem}
+        />
       </div>
     </DndProvider>
   );

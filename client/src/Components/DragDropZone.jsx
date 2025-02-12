@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { Card, CardContent, Typography, Button } from "@mui/joy";
-import {  Close as CloseIcon, Refresh as RefreshIcon, Download as DownloadIcon } from "@mui/icons-material";
+import { Card, CardContent, Typography, Button} from "@mui/joy";
+import { Slider } from "@mui/material";
+import {  Close as CloseIcon, Refresh as RefreshIcon, Download as DownloadIcon, FormatSize as FormatSizeIcon } from "@mui/icons-material";
 import {IconButton} from "@mui/material";
 
 const GRID_SIZE = 20;
@@ -11,6 +12,8 @@ const snapToGrid = (value) => Math.round(value / GRID_SIZE) * GRID_SIZE;
 const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height, onMove, onResize, onDelete, onRefresh, onExport }) => {
   const resizingRef = useRef(false);
   const positionRef = useRef({ left: initialLeft, top: initialTop });
+  const [fontSize, setFontSize] = useState(16);
+  const [showSlider, setShowSlider] = useState(false);
 
   const [, drag] = useDrag({
     type: "CARD",
@@ -82,84 +85,78 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height, on
       }}
     >
       <Card
-        variant="outlined"
-        sx={{
-          width: "100%",
-          height: "100%",
-          p: 2,
-          position: "relative",
+      variant="outlined"
+      sx={{
+        width: "100%",
+        height: "100%",
+        p: 2,
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography level="h6" sx={{ fontSize: `${fontSize}px` }}>
+          Card {id}
+        </Typography>
+      </CardContent>
+
+      {/* Zone d'icônes */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
+          alignItems: "center",
+          flexDirection: "row",
         }}
       >
-        <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography level="h6">Card {id}</Typography>
-        </CardContent>
-        <div style={{position: "absolute", top:0, right:0, display:"flex", alignItems: "flex-start", flexDirection: "row",}}>
-        <IconButton
-          onMouseDown={(event) => event.stopPropagation()}
-          onClick={(event) => {
-            event.stopPropagation();
-            onExport(id);
-          }}
-          sx={{
-            minWidth: "24px",
-            height: "24px",
-            borderRadius: "25%",
-            display: "flex",
-            alignItems: "center",
-            //justifyContent: "center",
-            padding: 0,
-          }}
-          color="gray"
-          variant="soft"
-        >
+        <IconButton onMouseDown={(e) => e.stopPropagation()} onClick={() => onExport(id)} color="gray" variant="soft">
           <DownloadIcon fontSize="small" />
         </IconButton>
-        <IconButton
-          onMouseDown={(event) => event.stopPropagation()}
-          onClick={(event) => {
-            event.stopPropagation();
-            onRefresh(id);
-          }}
-          sx={{
-            minWidth: "24px",
-            height: "24px",
-            borderRadius: "25%",
-            display: "flex",
-            alignItems: "center",
-            //justifyContent: "center",
-            padding: 0,
-          }}
-          color="gray"
-          variant="soft"
-        >
+
+        <IconButton onMouseDown={(e) => e.stopPropagation()} onClick={() => onRefresh(id)} color="gray" variant="soft">
           <RefreshIcon fontSize="small" />
         </IconButton>
-        <IconButton
-            onMouseDown={(event) => event.stopPropagation()}
-            onClick={(event) => {
-              event.stopPropagation();
-              onDelete(id);
-            }}
-            sx={{
-              minWidth: "24px",
-              height: "24px",
-              borderRadius: "25%",
-              display: "flex",
-              alignItems: "center",
-              //justifyContent: "center",
-              padding: 0,
-            }}
-            color="gray"
-            variant="soft"
-          >
-            <CloseIcon fontSize="small" />
+
+        <IconButton onMouseDown={(e) => e.stopPropagation()} onClick={() => setShowSlider(!showSlider)} color="gray" variant="soft">
+          <FormatSizeIcon fontSize="small" />
         </IconButton>
-        </div>
-        
+
+        <IconButton onMouseDown={(e) => e.stopPropagation()} onClick={() => onDelete(id)} color="gray" variant="soft">
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </div>
+
+      {/* Slider de taille de police */}
+      {showSlider && (
         <div
+          style={{
+            position: "absolute",
+            top: 30,
+            right: 10,
+            background: "white",
+            padding: "5px",
+            borderRadius: "5px",
+            boxShadow: "0px 0px 5px rgba(0,0,0,0.2)",
+            zIndex: 10,
+          }}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <Slider
+            value={fontSize}
+            onChange={(e, newValue) => setFontSize(newValue)}
+            min={10}
+            max={30}
+            step={1}
+            size="small"
+            sx={{ width: 100 }}
+          />
+        </div>
+      )}
+      <div
           style={{
             position: "absolute",
             right: 0,
@@ -171,7 +168,10 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height, on
           }}
           onMouseDown={handleMouseDownResize}
         />
-      </Card>
+
+
+        
+    </Card>
     </div>
   );
 };
