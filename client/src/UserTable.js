@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 
 
 // Composant pour récupérer les données depuis une API en utilisant le token
-function GetUserTable({ token, expiryDate }) {
+function GetUserTable({ token, expiryDate, fontSize }) {
   const [data, setData] = useState([]);
   const [socket, setSocket] = useState(null);
 
@@ -71,7 +71,7 @@ function GetUserTable({ token, expiryDate }) {
 
   return (
     <div>            
-        <CustomTable data={data} titles={titles} />
+        <CustomTable data={data} titles={titles} fontSize={fontSize}/>
     </div>
   );
 }

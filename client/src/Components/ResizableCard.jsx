@@ -116,7 +116,7 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height,
             maxWidth: "100%", 
             maxHeight: "calc(50% - 80px)" 
           }}>
-          <GetUserTable token={token} expiryDate={expiryDate} />;
+          <GetUserTable token={token} expiryDate={expiryDate} fontSize={fontSize}/>;
           </div>
         </>
         );

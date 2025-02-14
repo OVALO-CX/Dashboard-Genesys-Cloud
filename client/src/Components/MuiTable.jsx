@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 
-const CustomTable = ({ data, titles }) => {
+const CustomTable = ({ data, titles, fontSize }) => {
   // should be memoized or stable
   const columns = useMemo(
     () =>
@@ -9,8 +9,15 @@ const CustomTable = ({ data, titles }) => {
         accessorKey: title.accessorKey,
         header: title.header,
         size: title.size,
+        muiTableBodyCellProps: {
+          sx: { fontSize: `${fontSize}px` }, // 🖌️ Appliquer la taille de police
+        },
+        muiTableHeadCellProps: {
+          sx: { fontSize: `${fontSize + 2}px`, fontWeight: 'bold' },
+        },
+        flexGrow: 1,
       })),
-    [titles]
+    [titles, fontSize]
   );
 
   const tableData = useMemo(
@@ -29,7 +36,12 @@ const CustomTable = ({ data, titles }) => {
     data: tableData, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
   });
 
-  return <MaterialReactTable table={table} />;
+  return <MaterialReactTable table={table} 
+      enableColumnResizing // 🛠️ Permet à l'utilisateur de redimensionner les colonnes
+      muiTableBodyRowProps={{
+      sx: { height: `${Math.max(fontSize * 2, 25)}px` }, // 🔥 Hauteur dynamique des lignes
+     }}
+  />;
 };
 
 export default CustomTable;
