@@ -13,7 +13,7 @@ function AuthToken({ onTokenReceived }) {
     // Récupérer le jeton d'accès
     const fetchAccessToken = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api');
+        const response = await fetch('http://localhost:8080/api');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -33,7 +33,7 @@ function AuthToken({ onTokenReceived }) {
 
 
     // Connexion au WebSocket
-    const socket = io("http://localhost:5000");
+    const socket = io("http://localhost:8080");
 
     // Écoute des mises à jour de données en temps réel depuis le serveur
     socket.on("dataUpdate", (data) => {
