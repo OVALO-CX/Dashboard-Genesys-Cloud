@@ -28,7 +28,12 @@ function GetUserTable({ token, expiryDate, fontSize }) {
           setData(response.data.entities.map(user => ({
             ...user,
             presence: user.presence ? user.presence.presenceDefinition.systemPresence : null,
-            routingStatus: user.routingStatus ? user.routingStatus.status : null
+            routingStatus: user.routingStatus ? user.routingStatus.status : null,
+            divisionName: user.division ? user.division.name : null,
+            phoneNumber: user.addresses && user.addresses.length > 0 ? user.addresses[0].address : null,
+            mediaType: user.addresses && user.addresses.length > 0 ? user.addresses[0].mediaType : null,
+            type: user.addresses && user.addresses.length > 0 ? user.addresses[0].type : null,
+            countryCode: user.addresses && user.addresses.length > 0 ? user.addresses[0].countryCode : null
           })));
         } catch (error) {
           console.error('Erreur lors de la récupération Data :', error);
@@ -64,9 +69,17 @@ function GetUserTable({ token, expiryDate, fontSize }) {
   const titles = useMemo(() => [
     { accessorKey: 'name', header: 'Name', size: 120 },
     { accessorKey: 'title', header: 'Title', size: 120 },
+    { accessorKey: 'email', header: 'Email', size: 120 },
     { accessorKey: 'state', header: 'Stat', size: 120 },
+    { accessorKey: 'department', header: 'Departement', size: 120 },
+
     { accessorKey: 'presence', header: 'Presence', size: 120 },
-    { accessorKey: 'routingStatus', header: 'Status', size: 120 }
+    { accessorKey: 'routingStatus', header: 'Status', size: 120 },
+    { accessorKey: 'divisionName', header: 'Division', size: 120 },
+    { accessorKey: 'phoneNumber', header: 'Telephone', size: 120 },
+    { accessorKey: 'mediaType', header: 'Type Media', size: 120 },
+    { accessorKey: 'type', header: 'Type', size: 120 },
+    { accessorKey: 'countryCode', header: 'Code Pays', size: 120 }
   ], []);
 
   return (
