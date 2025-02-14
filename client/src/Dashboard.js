@@ -1,14 +1,21 @@
 // Dashboard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '@mui/joy/Card';
+<<<<<<< Updated upstream
 import DropZone from './Components/DropZone';
+=======
+
+import DropZone from "./Components/DropZone";
+>>>>>>> Stashed changes
 import DraggableItem from './Components/DraggableItem';
-import AuthToken from './AuthToken';
 import GetUserTable from './UserTable';
 import GetUserPie from './UserPie';
+<<<<<<< Updated upstream
 import Grid from './Components/Grid';
+=======
+>>>>>>> Stashed changes
 
 import { HiMiniTableCells } from "react-icons/hi2";
 import { FaChartPie } from "react-icons/fa";
@@ -27,8 +34,12 @@ function Dashboard() {
   const [token, setToken] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [droppedItems, setDroppedItems] = useState([]);
+<<<<<<< Updated upstream
   //const [showUserTable, setShowUserTable] = useState(false);
   const [showPieChart, setShowPieChart] = useState(false);
+=======
+  const [cards, setCards] = useState([]);
+>>>>>>> Stashed changes
   
 
   // Fonction pour recevoir le token
@@ -37,7 +48,9 @@ function Dashboard() {
     setExpiryDate(token_expiry);
   };
 
+
   const handleDrop = (itemName) => {
+<<<<<<< Updated upstream
     setDroppedItems([...droppedItems, itemName]);
    /* if (itemName === 'User Table') {
         setShowUserTable(true); // Afficher GetUserTable lorsque Item 1 est déposé
@@ -46,23 +59,47 @@ function Dashboard() {
       if (itemName === 'User PieChart') {
         setShowPieChart(true); // Afficher GetUserPie lorsque Item 1 est déposé
       }*/
+=======
+    console.log("Item dropped:", itemName);
+    setCards((prevCards) => [
+      ...prevCards,
+      {
+        id: prevCards.length + 1,
+        name: itemName,
+        initialLeft: snapToGrid(50),
+        initialTop: snapToGrid(50),
+        width: snapToGrid(150),
+        height: snapToGrid(100),
+        componentName: itemName,
+      }
+    ]);
+    
+>>>>>>> Stashed changes
       
   };
 
   const renderDroppedItem = (itemName, index) => {
     const CardStyle = {
-      padding: '0.01%',
+      padding: '20px',
       width: '100%',
       height: '100%', // Hauteur fixe pour toutes les cartes
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
     };
 
     const ComponentToRender = componentMap[itemName]; // Récupérer le composant en fonction du nom
+    console.log("Rendering item:", itemName, ComponentToRender);
+    if (!ComponentToRender) {
+      console.error(`Aucun composant trouvé pour ${itemName}`);  // Ajout d'une vérification dans la console
+    }
+    
     return (
-      <div key={index} style={{ width: '100%', height: '100%' }}>
+      <div key={index} style={{ position: 'absolute', left: cards[index].initialLeft, top: cards[index].initialTop, width: '100%', height: '100%' }}>
         <Card style={CardStyle}>
           <h6>{itemName}</h6>
           {ComponentToRender ? (
-            <ComponentToRender token={token} expiryDate={expiryDate} />
+            <ComponentToRender token={token} expiryDate={expiryDate}/>
           ) : (
             <div>Aucun composant associé</div> // Message par défaut si le composant n'est pas trouvé
           )}
@@ -70,6 +107,7 @@ function Dashboard() {
       </div>
     );};
 
+<<<<<<< Updated upstream
   /*const renderDroppedItem = (itemName, index) => {
     switch (itemName) {
       case 'User Table':
@@ -94,18 +132,47 @@ function Dashboard() {
         return null;
     }
   };*/
+=======
+  const addCard = (newCard) => {
+    setCards((prevCards) => [...prevCards, newCard]);
+  };
+  
 
+  const moveCard = (id, left, top) => {
+    setCards((prevCards) =>
+      prevCards.map((card) =>
+        card.id === id ? { ...card, initialLeft: left, initialTop: top } : card
+      )
+    );
+  };
+
+  const resizeCard = (id, width, height) => {
+    setCards((prevCards) =>
+      prevCards.map((card) =>
+        card.id === id ? { ...card, width, height } : card
+      )
+    );
+  };
+
+  const deleteCard = (id) => {
+    setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+  };
+>>>>>>> Stashed changes
 
 
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <AuthToken onTokenReceived={handleTokenReceived} />
+      
       <div>
         <h6>Draggable Items</h6>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div style={{ marginRight: '2rem' }}>
+<<<<<<< Updated upstream
             <DraggableItem name="User Table" selectedIcon={HiMiniTableCells} />
+=======
+            <DraggableItem name='User Table' onDrop={handleDrop} selectedIcon={HiMiniTableCells} />
+>>>>>>> Stashed changes
           </div>
           <div style={{ marginRight: '2rem' }}>
             <DraggableItem name="User PieChart" selectedIcon={FaChartPie} />
@@ -114,6 +181,7 @@ function Dashboard() {
             <DraggableItem name="User Data2" selectedIcon={PiChartBarHorizontalFill} />
           </div>
           <div style={{ marginRight: '2rem' }}>
+<<<<<<< Updated upstream
             <DraggableItem name="User Data 3 " selectedIcon={IoBarChart} />
           </div>
         </div>
@@ -123,11 +191,27 @@ function Dashboard() {
         droppedItems={droppedItems}
         renderDroppedItem={renderDroppedItem}
       />
+=======
+            <DraggableItem name="User Data 3" onDrop={handleDrop} selectedIcon={IoBarChart} />
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: "20px" }}>
+        
+      <DropZone 
+        cards={cards} 
+        moveCard={moveCard} 
+        resizeCard={resizeCard} 
+        deleteCard={deleteCard} 
+        onAddCard={addCard}/>
+      </div>
+>>>>>>> Stashed changes
     </DndProvider>
   );
 }
 export default Dashboard;
 
+<<<<<<< Updated upstream
 
 
 
@@ -139,3 +223,11 @@ export default Dashboard;
           </Grid>
         ))}
       </Grid>*/
+=======
+/*
+<GetUserTable
+        token={token}
+        expiryDate={expiryDate}
+      />
+*/
+>>>>>>> Stashed changes

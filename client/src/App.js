@@ -6,16 +6,18 @@ import { io } from 'socket.io-client';
 
 import AuthToken from './AuthToken'; // Importer le composant pour récupérer le jeton d'accès
 import RealTimeUpdates from './RealTimeUpdates';
+import Dashboard from './Dashboard';
+//import Dashboard from './widget';
+
 //import GetUsers from './GetUsers';
 import GetUsersURL from './GetUsersURL';
 import GetUserTable from './UserTable';
-import Dashboard from './Dashboard';
 import PieChart from './Components/PieChart'
 
 function App() {
   const [token, setToken] = useState('');
-  const [socket, setSocket] = useState(null);
   const [expiryDate, setExpiryDate] = useState('');
+  const [socket, setSocket] = useState(null);
   const [droppedItems, setDroppedItems] = useState([]);
 
   // Fonction pour recevoir le token

@@ -1,85 +1,67 @@
-import React from 'react';
-import { useDrop } from 'react-dnd';
-import { styled } from '@mui/joy/styles';
-import Sheet from '@mui/joy/Sheet';
-import Grid from '@mui/joy/Grid';
-//import BasicPie from './PieChart'; // Importez votre composant BasicPie
+import React, {useState, useEffect} from "react";
+import { useDrop } from "react-dnd";
+import DraggableResizableCard from "./ResizableCard";
 
-const Item = styled(Sheet)(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === 'dark' ? theme.palette.background.level1 : '#fff',
-  ...theme.typography['body-sm'],
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  borderRadius: 4,
-  color: theme.vars.palette.text.secondary,
-}));
+const GRID_SIZE = 20;
 
-const DropZone = ({ onDrop, droppedItems, renderDroppedItem }) => {
-  const [{ isOver }, drop] = useDrop({
-    accept: 'item',
-    drop: (item) => {
-      onDrop(item.name);
+const snapToGrid = (value) => Math.round(value / GRID_SIZE) * GRID_SIZE;
+
+const DropZone = ({ cards, moveCard, resizeCard, deleteCard, onAddCard, onRefresh, onExport }) => {
+    const [dropZoneDimensions, setDropZoneDimensions] = useState({ width: 0, height: 0 });
+  // Référence pour mesurer la taille de la zone de dépôt
+    const dropZoneRef = React.useRef(null);
+
+    // Mettre à jour les dimensions de la zone de dépôt lorsque la fenêtre change
+
+  
+    const [, drop] = useDrop({
+    accept: "CARD",
+    drop: (item, monitor) => {
+      const dropOffset = monitor.getSourceClientOffset() || { x: 0, y: 0 };
+      const left = snapToGrid(dropOffset.x);
+      const top = snapToGrid(dropOffset.y);
+
+      const newCard = {
+        id: cards.length + 1,
+        name: item.name,
+        initialLeft: left,
+        initialTop: top,
+        width: snapToGrid(600),
+        height: snapToGrid(400),
+        componentName: item.name, 
+        //data: item.data || {} 
+      };
+      onAddCard(newCard);
     },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
   });
 
   return (
     <div
       ref={drop}
       style={{
-        position: 'relative',
-        border: '1px solid #cccccc',
-        minHeight: '50rem',
-        padding: '1rem',
-        backgroundColor: isOver ? '#e6e6e6' : '#F0F0F2',
-        display: 'flex',
-        flexWrap: 'wrap',
+        position: "relative",
+        width: "100%",
+        height: "800px",
+        //border: "1px solid black",
+        borderRadius : "1%",
+        backgroundColor: "#F0F0F2",
       }}
     >
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={12} // Utilise 12 colonnes pour le système de grille
-        sx={{ flexGrow: 1 }}
-      >
-        {droppedItems.map((item, index) => (
-          <Grid 
-            xs={droppedItems.length === 1 ? 12 : 6} // 12 colonnes si 1 item, 6 colonnes si 2 items
-            sm={droppedItems.length === 1 ? 12 : 6}
-            md={droppedItems.length === 1 ? 12 : 6}
-            key={index}
-          >
-            {renderDroppedItem(item, index)}
-          </Grid>
-        ))}
-      </Grid>
+      {cards.map((card) => (
+        <DraggableResizableCard
+          key={card.id}
+          {...card}
+          id={card.id}
+          onMove={moveCard}
+          onResize={resizeCard}
+          onDelete={deleteCard}
+          onRefresh={onRefresh}
+          onExport={onExport}
+          data={card} // la carte est recuperée ici 
+        />
+      ))}
     </div>
   );
 };
 
 export default DropZone;
-
-
-/*
-
-{droppedItems.map((item, index) => {
-          // Vérifier si le nombre d'items est impair
-          const isLastItem = index === droppedItems.length - 1; //verifier que c'est bien le Dernier element 
-          const isOdd = droppedItems.length % 2 !== 0; // le nombre est impair car le resultat est diff de 0
-
-          return (
-            <Grid
-              xs={isOdd && isLastItem ? 12 : 6} // 12 colonnes pour le dernier item si impair, 6 colonnes pour les autres
-              sm={isOdd && isLastItem ? 12 : 6}
-              md={isOdd && isLastItem ? 12 : 6}
-              key={index}
-            >
-              {renderDroppedItem(item, index)}
-            </Grid>
-          );
-        })}
-
-*/
