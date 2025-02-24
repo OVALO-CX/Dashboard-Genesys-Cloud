@@ -9,7 +9,7 @@ const GRID_SIZE = 20;
 
 const snapToGrid = (value) => Math.round(value / GRID_SIZE) * GRID_SIZE;
 
-const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height, onMove, onResize, onDelete, onRefresh, onExport }) => {
+const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height, onMove, onResize, onDelete, onRefresh, onExport, token }) => {
   const resizingRef = useRef(false);
   const positionRef = useRef({ left: initialLeft, top: initialTop });
   const [fontSize, setFontSize] = useState(16);
@@ -220,6 +220,7 @@ const DropZone = ({ cards, moveCard, resizeCard, deleteCard, onAddCard, onRefres
           onDelete={deleteCard}
           onRefresh={onRefresh} // Pass the refresh function
           onExport={onExport} // Pass the export function
+          token
         />
       ))}
     </div>

@@ -3,6 +3,9 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '@mui/joy/Card';
 
+import { useAuth } from './context/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+
 import DropZone from "./Components/DropZone";
 import DraggableItem from './Components/DraggableItem';
 import AuthToken from './AuthToken';
@@ -26,15 +29,19 @@ const componentMap = {
 };
 
 function Dashboard() {
-  const [token, setToken] = useState('');
+  //const [token, setToken] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cards, setCards] = useState([]);
 
+  const { user, token, logout } = useAuth();
+  const navigate = useNavigate();
+
+
   // Function to receive the token
-  const handleTokenReceived = ({access_token, token_expiry}) => {
+  /*const handleTokenReceived = ({access_token, token_expiry}) => {
     setToken(access_token);
     setExpiryDate(token_expiry);
-  };
+  };*/
 
 
   const handleDrop = (itemName) => {
@@ -80,7 +87,7 @@ function Dashboard() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <AuthToken onTokenReceived={handleTokenReceived} />
+      {/*<AuthToken onTokenReceived={handleTokenReceived} />*/}
 
       <div>
         <h6>Draggable Items</h6>
@@ -107,8 +114,9 @@ function Dashboard() {
           resizeCard={resizeCard}
           deleteCard={deleteCard}
           onAddCard={addCard}
-          onRefresh={handleTokenReceived}
-          onExport={handleTokenReceived}
+          //onRefresh={handleTokenReceived}
+          //onExport={handleTokenReceived}
+          token
         />
       </div>
     </DndProvider>

@@ -3,7 +3,7 @@ import { useDrag } from "react-dnd";
 import { Card, CardContent, Typography } from "@mui/joy";
 import { ExportButton, RefreshButton, DeleteButton, ResizeButton } from "./IconButton";
 import GetUserTable from '../UserTable'; // Import your component here
-import AuthToken from '../AuthToken';
+//import AuthToken from '../AuthToken';
 
 const GRID_SIZE = 20;
 
@@ -110,7 +110,7 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height,
       case 'User Table':
         return (
         <>
-          <AuthToken onTokenReceived={handleTokenReceived} />
+          {/*<AuthToken onTokenReceived={handleTokenReceived} />*/}
           <div style={{ 
             overflow: "auto", 
             maxWidth: "100%", 
