@@ -6,12 +6,12 @@ import { AuthProvider } from './context/AuthProvider';
 import AuthCallback from './auth-components/AuthCallback';
 //import { Dashboard } from './components/Dashboard';
 import LoginButton from './auth-components/LoginButton';
-import { io } from 'socket.io-client';
+//import { io } from 'socket.io-client';
 
 
 
-import AuthToken from './AuthToken'; // Importer le composant pour récupérer le jeton d'accès
-import RealTimeUpdates from './RealTimeUpdates';
+//import AuthToken from './AuthToken'; // Importer le composant pour récupérer le jeton d'accès
+//import RealTimeUpdates from './RealTimeUpdates';
 //import GetUsers from './GetUsers';
 import GetUsersURL from './GetUsersURL';
 import GetUserTable from './UserTable';
@@ -56,7 +56,7 @@ function App() {
             {/*<Route path="/pie" element={<PieChart />} />*/}
             <Route path="/" element={<LoginButton />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard token/>} />
           </Routes>
         </DndProvider>
      

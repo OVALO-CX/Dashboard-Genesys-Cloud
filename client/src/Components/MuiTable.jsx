@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
+import { useAuth } from '../context/AuthProvider';
 
-const CustomTable = ({ data, titles, fontSize }) => {
+const CustomTable = ({ data, titles, fontSize, token }) => {
+
+  const { token: AuthToken }  = useAuth();
+  const finalToken = token || AuthToken;
+
+  console.log("📡 Token reçu dans MuiTable :", token);
+  console.log("🔑 Token utilisé dans MuiTable :", finalToken);
+
+  console.log("Token : ", token);
   // should be memoized or stable
   const columns = useMemo(
     () =>
@@ -36,7 +45,7 @@ const CustomTable = ({ data, titles, fontSize }) => {
     data: tableData, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
   });
 
-  return <MaterialReactTable table={table} 
+  return <MaterialReactTable table={table} token={finalToken}
       enableColumnResizing // 🛠️ Permet à l'utilisateur de redimensionner les colonnes
       muiTableBodyRowProps={{
       sx: { height: `${Math.max(fontSize * 2, 25)}px` }, // 🔥 Hauteur dynamique des lignes

@@ -10,9 +10,9 @@ const GRID_SIZE = 20;
 const snapToGrid = (value) => Math.round(value / GRID_SIZE) * GRID_SIZE;
 
 const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height, 
-  onMove, onResize, onDelete, onRefresh, onExport, data }) => {
+  onMove, onResize, onDelete, onRefresh, onExport, data, token }) => {
 
-    const [token, setToken] = useState('');
+    //const [token, setToken] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cardWidth, setCardWidth] = useState(width);
     const [cardHeight, setCardHeight] = useState(height);
@@ -39,10 +39,10 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height,
 
 
   // Function to receive the token
-  const handleTokenReceived = ({access_token, token_expiry}) => {
+  /*const handleTokenReceived = ({access_token, token_expiry}) => {
     setToken(access_token);
     setExpiryDate(token_expiry);
-  };
+  };*/
 
   const handleMouseDownResize = (event) => {
     event.stopPropagation();

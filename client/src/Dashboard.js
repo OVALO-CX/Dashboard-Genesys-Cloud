@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import DropZone from "./Components/DropZone";
 import DraggableItem from './Components/DraggableItem';
-import AuthToken from './AuthToken';
+//import AuthToken from './AuthToken';
 import GetUserTable from './UserTable';
 import GetUserPie from './UserPie';
 
@@ -29,13 +29,18 @@ const componentMap = {
 };
 
 function Dashboard() {
+
+
+  
   //const [token, setToken] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cards, setCards] = useState([]);
 
+  //const { user, token, logout } = useAuth();
   const { user, token, logout } = useAuth();
   const navigate = useNavigate();
 
+  console.log("Token : ", token);
 
   // Function to receive the token
   /*const handleTokenReceived = ({access_token, token_expiry}) => {
@@ -60,6 +65,10 @@ function Dashboard() {
       }
     ]);
   };
+
+  const retrieveToken = () => {
+    localStorage.getItem('token');
+  }
 
   const addCard = (newCard) => {
     setCards((prevCards) => [...prevCards, newCard]);
@@ -93,16 +102,16 @@ function Dashboard() {
         <h6>Draggable Items</h6>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div style={{ marginRight: '2rem' }}>
-            <DraggableItem name='User Table' onDrop={handleDrop} selectedIcon={HiMiniTableCells} />
+            <DraggableItem name='User Table' onDrop={handleDrop} selectedIcon={HiMiniTableCells} token={token} />
           </div>
           <div style={{ marginRight: '2rem' }}>
-            <DraggableItem name="User PieChart" onDrop={handleDrop} selectedIcon={FaChartPie} />
+            <DraggableItem name="User PieChart" onDrop={handleDrop} selectedIcon={FaChartPie} token={token}/>
           </div>
           <div style={{ marginRight: '2rem' }}>
-            <DraggableItem name="User Data2" onDrop={handleDrop} selectedIcon={PiChartBarHorizontalFill} />
+            <DraggableItem name="User Data2" onDrop={handleDrop} selectedIcon={PiChartBarHorizontalFill} token={token}/>
           </div>
           <div style={{ marginRight: '2rem' }}>
-            <DraggableItem name="User Data3" onDrop={handleDrop} selectedIcon={IoBarChart} />
+            <DraggableItem name="User Data3" onDrop={handleDrop} selectedIcon={IoBarChart} token={token}/>
           </div>
         </div>
       </div>
@@ -116,7 +125,7 @@ function Dashboard() {
           onAddCard={addCard}
           //onRefresh={handleTokenReceived}
           //onExport={handleTokenReceived}
-          token
+          token={token}
         />
       </div>
     </DndProvider>

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:5000"); // Remplacez par l'URL de votre serveur si nécessaire
+
+//const socket = io("http://localhost:5000"); // Remplacez par l'URL de votre serveur si nécessaire
+const socket = io("https://api.mypurecloud.de"); // Remplacez par l'URL de votre serveur si nécessaire
 
 const RealTimeUpdates = () => {
   const [data, setData] = useState(null);

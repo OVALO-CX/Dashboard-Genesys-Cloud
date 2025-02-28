@@ -176,7 +176,7 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height, on
   );
 };
 
-const DropZone = ({ cards, moveCard, resizeCard, deleteCard, onAddCard, onRefresh, onExport }) => {
+const DropZone = ({ cards, moveCard, resizeCard, deleteCard, onAddCard, onRefresh, onExport, token }) => {
   const [, drop] = useDrop({ 
     accept: "CARD" ,
     drop: (item, monitor) => {
@@ -220,7 +220,7 @@ const DropZone = ({ cards, moveCard, resizeCard, deleteCard, onAddCard, onRefres
           onDelete={deleteCard}
           onRefresh={onRefresh} // Pass the refresh function
           onExport={onExport} // Pass the export function
-          token
+          token={token}
         />
       ))}
     </div>

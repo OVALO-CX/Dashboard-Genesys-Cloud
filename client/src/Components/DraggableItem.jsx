@@ -3,7 +3,7 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
 
-const DraggableItem = ({ name, selectedIcon: Icon }) => {
+const DraggableItem = ({ name, selectedIcon: Icon, token }) => {
   const [{ isDragging }, drag] = useDrag({
     type: 'CARD', // Spécification de type valide
     item: { name },
