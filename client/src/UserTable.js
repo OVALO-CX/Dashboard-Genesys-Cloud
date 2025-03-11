@@ -2,10 +2,15 @@ import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import CustomTable from "./Components/MuiTable";
 import { useAuth } from "./context/AuthProvider";
+import { ExportButton } from "./Components/IconButton";
+import { formControlClasses } from "@mui/material";
 
-function GetUserTable({ fontSize }) {
+//function GetUserTable({ fontSize }) {
+  function GetUserTable({ fontSize, onDataReceived }) {
   const { token } = useAuth(); // 🔥 Récupérer le token via le contexte d'authentification
   const [data, setData] = useState([]);
+  //const [visibleColumns, setVisibleColumns] = useState([]); //Suivre les colonnes visibles
+
 
   useEffect(() => {
     if (!token) {
@@ -28,7 +33,8 @@ function GetUserTable({ fontSize }) {
         );
 
         console.log("✅ Réponse reçue dans UserTable :", response.data);
-        setData(response.data.entities.map(user => ({
+        //setData(response.data.entities.map(user => ({
+        const formattedData = response.data.entities.map((user) => ({
           ...user,
           presence: user.presence ? user.presence.presenceDefinition.systemPresence : null,
           routingStatus: user.routingStatus ? user.routingStatus.status : null,
@@ -37,7 +43,18 @@ function GetUserTable({ fontSize }) {
           mediaType: user.addresses && user.addresses.length > 0 ? user.addresses[0].mediaType : null,
           type: user.addresses && user.addresses.length > 0 ? user.addresses[0].type : null,
           countryCode: user.addresses && user.addresses.length > 0 ? user.addresses[0].countryCode : null
-        })));
+       // })));
+        }));
+
+        setData(formattedData);
+        // 🔥 Envoyer les données à `ResizableCard`
+       
+        
+        if (onDataReceived) {
+          onDataReceived(formattedData);
+        }
+        
+
       } catch (error) {
         console.error("❌ Erreur lors de la récupération des données :", error);
       }
@@ -47,10 +64,10 @@ function GetUserTable({ fontSize }) {
   }, [token]); // 🔥 Refaire la requête si le token change
 
   // Vérification après mise à jour de `data`
-  /*useEffect(() => {
+  useEffect(() => {
     console.log("📊 Données mises à jour dans UserTable :", data);
   }, [data]);
-*/
+
   const titles = useMemo(
     () => [
       { accessorKey: "name", header: "Nom", size: 120 },
@@ -69,9 +86,28 @@ function GetUserTable({ fontSize }) {
     []
   );
 
+  /*
+  useEffect(() => {
+    console.log("📊 Colonnes visibles dans UserTable avant envoi :", visibleColumns);
+    if (onDataReceived && data.length > 0 && visibleColumns.length > 0) {
+      onDataReceived(data, visibleColumns);
+    }
+  }, [data, visibleColumns, onDataReceived]);
+*/
+  /*const handleColumnVisibilityChange = (newVisibleColumns) => {
+    console.log("📌 Colonnes visibles mises à jour :", newVisibleColumns);
+    setVisibleColumns(newVisibleColumns);
+  }*/
+
+  console.log("📊 Données envoyées à ExportButton :", data);
+  //console.log("📊 Colonnes envoyées à ExportButton :", visibleColumns);
+
   return (
     <div>
-      <CustomTable data={data} titles={titles} fontSize={fontSize} token={token} />
+      {/*data.length > 0 && <ExportButton data={data} columns={titles} />*/}
+      {/*data.length > 0 && <ExportButton data={data} columns={visibleColumns.length ? visibleColumns : titles} />*/}
+      {/*<CustomTable data={data} titles={titles} fontSize={fontSize} token={token} onColumnVisibilityChange={setVisibleColumns}/>*/}
+      <CustomTable data={data} titles={titles} fontSize={fontSize} token={token}/>
     </div>
   );
 }

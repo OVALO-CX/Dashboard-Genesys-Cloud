@@ -22,6 +22,11 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height,
     const positionRef = useRef({ left: initialLeft, top: initialTop });
     const [fontSize, setFontSize] = useState(16);
 
+    // Etat pour stocker les données récupérées
+    const [ tableData, setTableData ] = useState([]);
+    //const [ tableColumns, setTableColumns ] = useState([]);
+    //const [ visibleColumns, setVisibleColumns ] = useState([]);
+
   const [, drag] = useDrag({
     type: "CARD",
     item: { id },
@@ -101,6 +106,54 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height,
     setFontSize(newFontSize); // Update the local font size
   };
 
+ /* //Fonction pour recevoir les données de GetUserTable
+  const handleDataReceived = (data, columns) => {
+    console.log("📊 Données reçues dans ResizableCard :", data);
+    setTableData(data);
+    setTableColumns(columns);
+    setVisibleColumns(columns);
+  } 
+    */
+     // 🔹 Fonction pour recevoir les données complètes
+    const handleDataReceived = (receivedData) => {
+      console.log("📥 Données reçues dans ResizableCard:", receivedData);
+      setTableData(receivedData);
+    };
+
+    useEffect(() => {
+      console.log("📊 Données mises à jour dans ResizableCard:", tableData);
+    }, [tableData]);
+
+
+/*      // 🔹 Vérification que `tableData` est bien mis à jour
+      useEffect(() => {
+        console.log("📊 Données mises à jour dans ResizableCard:", tableData);
+        console.log("📊 Colonnes visibles mises à jour dans ResizableCard:", visibleColumns);
+      }, [tableData, visibleColumns]);
+*/
+    // 🔹 Fonction pour recevoir les données et colonnes visibles
+    /*
+    const handleDataReceived = (receivedData, receivedColumns) => {
+      console.log("📥 Données reçues dans ResizableCard:", receivedData);
+      console.log("📥 Colonnes visibles reçues dans ResizableCard:", receivedColumns);
+      
+      if (receivedColumns.length > 0) { // 🔥 Vérifier si les colonnes ne sont pas vides
+        setTableData(receivedData);
+        setVisibleColumns(receivedColumns);
+      } else {
+        console.warn("⚠️ Aucune colonne visible reçue, les données ne seront pas exportées.");
+      }
+    };
+    */
+
+    /*
+    useEffect(() => {
+      console.log("📊 Données mises à jour dans ResizableCard:", tableData);
+      console.log("📊 Colonnes visibles mises à jour dans ResizableCard:", visibleColumns);
+    }, [tableData, visibleColumns]);
+    */
+
+
   // Dynamically select the component to render based on the card data
   const renderComponent = () => {
     if (!data || !data.componentName) 
@@ -116,7 +169,9 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height,
             maxWidth: "100%", 
             maxHeight: "calc(50% - 80px)" 
           }}>
-          <GetUserTable token={token} expiryDate={expiryDate} fontSize={fontSize}/>;
+            
+          {/*<GetUserTable data={data} token={token} expiryDate={expiryDate} fontSize={fontSize} onDataReceived={handleDataReceived}/>;*/}
+          <GetUserTable data={data} token={token} expiryDate={expiryDate} fontSize={fontSize} onDataReceived={handleDataReceived}/>;
           </div>
         </>
         );
@@ -162,7 +217,10 @@ const DraggableResizableCard = ({ id, initialLeft, initialTop, width, height,
           <Typography level="h6">{data?.name || `Card ${id}`}</Typography>
 
         <div style={{ position: "absolute", top: 0, right: 0, display: "flex", alignItems: "flex-start", flexDirection: "row", }}>
-          <ExportButton onClick={() => onExport(id)} />
+          <ExportButton data={tableData} />          
+          {/*<ExportButton onClick={() => onExport(id)}/>*/}
+          {/*<ExportButton data={tableData} columns={tableColumns} />*/}
+          {/*<ExportButton data={tableData} columns={visibleColumns} />*/}
           <RefreshButton onClick={() => onRefresh(id)} />
           <ResizeButton onResize={handleResizeFont} />
           <DeleteButton onClick={() => onDelete(id)} />
